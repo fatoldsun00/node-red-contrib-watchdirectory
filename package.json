@@ -1,0 +1,28 @@
+{
+  "name": "red-contrib-watchdirectory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "node-red-watchdirectory.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fatoldsun00/node-red-contrib-watchdirectory.git"
+  },
+  "keywords": [
+    "node",
+    "red",
+    "file",
+    "watcher"
+  ],
+  "author": "FatOldSun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fatoldsun00/node-red-contrib-watchdirectory/issues"
+  },
+  "homepage": "https://github.com/fatoldsun00/node-red-contrib-watchdirectory#readme",
+  "dependencies": {
+    "chokidar": "^3.3.1"
+  }
+}
