@@ -1,12 +1,10 @@
 module.exports = function(RED) {
-  console.log('icicicicicicicicicicicicici');
-
-  const chokidar = require('chokidar')
-  console.log('icicicicicicicicicicicicici');
+    const chokidar = require('chokidar')
+    const path = require('path');
 
   function  WatchDirectory(config) {
     RED.nodes.createNode(this,config);
-    this.folder = config.folder;
+    this.folder = path.normalize( config.folder).replace(/\\/g,"/")
     this.recursive = config.recursive ? true : false;
     this.typeEvent = config.typeEvent;
     this.ignoreInitial = config.ignoreInitial;
@@ -16,14 +14,15 @@ module.exports = function(RED) {
 
   WatchDirectory.prototype.startListening = function() {
     var node = this;
-
     // Initialize watcher.
     const watcher = chokidar.watch(node.folder, {
       ignored: (filename) => {
-        let file = filename.match(/([^\\ | ^/]*)\..{3}$/)
+        filename = path.normalize( filename ).replace(/\\/g,"/")
+        let file = path.basename(filename) 
+        //filename.match(/([^\\ | ^/]*)\..{3}$/)
         if (file && file.length){ 
           re = new RegExp(node.ignoredFiles)
-          return re.test(file[0])
+          return re.test(file)
         }      
       },
       persistent: true,
@@ -35,10 +34,10 @@ module.exports = function(RED) {
 
     switch (node.typeEvent) {
       case 'create': 
-        watcher.on('add', path => {
-          const [file] = path.match(/([^\\ | ^/]*)\..{3}$/)
-          const [fileDir] = path.split(file)
-          node.send({file,fileDir,filename: path,payload: path})
+        watcher.on('add', filename => {
+          const file = path.basename(filename) 
+          const fileDir = path.dirname(filename) 
+          node.send({file,fileDir,filename, payload: filename})
         })
         break;
       case 'update': 
