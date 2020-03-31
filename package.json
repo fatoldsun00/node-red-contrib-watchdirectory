@@ -1,5 +1,5 @@
 {
-  "name": "red-contrib-watchdirectory",
+  "name": "node-red-contrib-watchdirectory",
   "version": "1.0.0",
   "description": "",
   "main": "node-red-watchdirectory.js",
@@ -11,9 +11,10 @@
     "url": "git+https://github.com/fatoldsun00/node-red-contrib-watchdirectory.git"
   },
   "keywords": [
-    "node",
-    "red",
-    "file",
+    "nodered",
+    "node-red",
+    "file watcher",
+    "folder watcher",
     "watcher"
   ],
   "author": "FatOldSun",

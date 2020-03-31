@@ -1,28 +1,35 @@
 <script type="text/javascript">
-    RED.nodes.registerType('watchdirectory',{
+    RED.nodes.registerType('watch-directory',{
         category: 'storage',
-        color: '#a6bbcf',
+        color: 'burlywood',
         defaults: {
-            folder: {value:"", required: true}
+            folder: {value:"", required: true},
+            recursive: {value:true, required: false},
+            typeEvent: {value:"create", required: true},
+            ignoreInitial: {value:true, required: false},
+            ignoredFiles: {value:"", required: false},
         },
-        align: "left",
         inputs:0,
         outputs:1,
-        icon: "bridge.png",
+        icon: "watch.svg",
         label: function() {
-            return this.folder||"watchdirectory";
+            return this.name||"watch-directory";
         }
     });
 </script>
 
-<script type="text/x-red" data-template-name="watchdirectory">
+<script type="text/html" data-template-name="watch-directory">
     <div class="form-row">
         <label for="node-input-folder"><i class="icon-tag"></i> Folder</label>
         <input type="text" id="node-input-folder" placeholder="Folder to watch">
     </div>
     <div class="form-row">
         <label for="node-input-recursive">Recursive</label>
-        <input type="text" id="node-input-recursive">
+        <input type="checkbox" id="node-input-recursive">
+    </div>
+    <div class="form-row">
+        <label for="node-input-ignoreInitial">ignore file in folder on start</label>
+        <input type="checkbox" id="node-input-ignoreInitial">
     </div>
     <div class="form-row">
         <label for="node-input-typeEvent">Type events</label>
@@ -38,7 +45,6 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="watchdirectory">
-    <p>Simple node that watches a folder, and sends events when files are added/created/changed/deleted. </p>
-    <p>The events send will contain the following fields in <b>payload</b>:<code>changeType</code> and <code>filePath</code></p>
+<script type="text/html" data-help-name="watch-directory">
+    <p>A simple node that converts the message payloads into all watch-directory characters</p>
 </script>

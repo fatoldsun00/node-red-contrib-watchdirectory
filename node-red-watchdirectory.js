@@ -1,17 +1,63 @@
 module.exports = function(RED) {
-  var chokidar = require('chokidar');
 
-  function WatchDirectory(config) {
+  const chokidar = require('chokidar')
+
+  function  WatchDirectory(config) {
     RED.nodes.createNode(this,config);
-   
-
-    console.log(this,"**************************************************");
+    this.folder = config.folder;
+    this.recursive = config.recursive ? true : false;
+    this.typeEvent = config.typeEvent;
+    this.ignoreInitial = config.ignoreInitial;
+    this.ignoredFiles = config.ignoredFiles || false;
+    this.startListening();  
   }
 
-  WatchDirectory.prototype.showListening = function() {
-    this.status({fill:"green", shape: "ring", text: "File added"})
+  WatchDirectory.prototype.startListening = function() {
+    var node = this;
+
+    // Initialize watcher.
+    const watcher = chokidar.watch(node.folder, {
+      ignored: (filename) => {
+        let file = filename.match(/([^\\ | ^/]*)\..{3}$/)
+        if (file && file.length){ 
+          re = new RegExp(node.ignoredFiles)
+          return re.test(file[0])
+        }      
+      },
+      persistent: true,
+      depth: node.recursive,
+      ignoreInitial: node.ignoreInitial,
+      awaitWriteFinish:true,
+      usePolling:true,
+    });
+
+    switch (node.typeEvent) {
+      case 'create': 
+        watcher.on('add', path => {
+          const [file] = path.match(/([^\\ | ^/]*)\..{3}$/)
+          const [fileDir] = path.split(file)
+          node.send({file,fileDir,filename: path,payload: path})
+        })
+        break;
+      case 'update': 
+        watcher.on('change', path => log(`File ${path} has been added`))
+        break;
+      case 'delete': 
+        watcher.on('unl', path => log(`File ${path} has been added`))
+        break;
+    }
+
+    watcher.on('all', (event,path) => {
+      node.status({fill:"purple", shape: "ring", text: "work on "+event+" "+ path});
+    }).on('ready', () => {
+      node.status({fill:"green", shape: "ring", text: "Clear"})
+    })
+
+
+    //on close
+    node.on('close', () => {
+      watcher.close()
+    })
   }
-
-
-  RED.nodes.registerType("watchdirectory",WatchDirectory);
+  RED.nodes.registerType("watch-directory",WatchDirectory);
 }
