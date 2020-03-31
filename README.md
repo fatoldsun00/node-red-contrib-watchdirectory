@@ -1,7 +1,8 @@
 # node-red-contrib-watchdirectory
-[![BuyMeCoffee][buymecoffee-shield]][buymecoffee-link]
 
 A watcher file/folder changed for [Node-RED](https://nodered.org/), based on [chokidar](https://github.com/paulmillr/chokidar)
+
+[![BuyMeCoffee][buymecoffee-shield]][buymecoffee-link]
 
 ## Why a third node for watching folder ?
 
