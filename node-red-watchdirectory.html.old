@@ -1,0 +1,50 @@
+<script type="text/javascript">
+    RED.nodes.registerType('watch-directory',{
+        category: 'storage',
+        color: 'burlywood',
+        defaults: {
+            folder: {value:"", required: true},
+            recursive: {value:true, required: false},
+            typeEvent: {value:"create", required: true},
+            ignoreInitial: {value:true, required: false},
+            ignoredFiles: {value:"", required: false},
+        },
+        inputs:0,
+        outputs:1,
+        icon: "watch.svg",
+        label: function() {
+            return this.name||"watch-directory";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="watch-directory">
+    <div class="form-row">
+        <label for="node-input-folder"><i class="icon-tag"></i> Folder</label>
+        <input type="text" id="node-input-folder" placeholder="Folder to watch">
+    </div>
+    <div class="form-row">
+        <label for="node-input-recursive">Recursive</label>
+        <input type="checkbox" id="node-input-recursive">
+    </div>
+    <div class="form-row">
+        <label for="node-input-ignoreInitial">ignore file in folder on start</label>
+        <input type="checkbox" id="node-input-ignoreInitial">
+    </div>
+    <div class="form-row">
+        <label for="node-input-typeEvent">Type events</label>
+        <select id="node-input-typeEvent">
+            <option value="create">Create</option>
+            <option value="update">Update</option>
+            <option value="delete">Delete</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-ignoredFiles">Ingored Files</label>
+        <input type="text" id="node-input-ignoredFiles" placeholder="Regex for file to ignore">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="watch-directory">
+    <p>A simple node that converts the message payloads into all watch-directory characters</p>
+</script>

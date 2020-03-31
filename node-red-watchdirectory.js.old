@@ -1,8 +1,6 @@
 module.exports = function(RED) {
-  console.log('icicicicicicicicicicicicici');
 
   const chokidar = require('chokidar')
-  console.log('icicicicicicicicicicicicici');
 
   function  WatchDirectory(config) {
     RED.nodes.createNode(this,config);
