@@ -18,7 +18,7 @@ module.exports = function(RED) {
     const watcher = chokidar.watch(node.folder, {
       ignored: (fileName) => {
         fileName = path.normalize( fileName )
-        let file = path.basename(filename) 
+        let file = path.basename(fileName) 
         if (file && file.length){ 
           re = new RegExp(node.ignoredFiles)
           return re.test(file)
@@ -37,7 +37,7 @@ module.exports = function(RED) {
           fileName = path.normalize( fileName )
           const file = path.basename(fileName) 
           const fileDir = path.dirname(fileName) 
-          node.send({file,fileDir,filename, payload: filename})
+          node.send({file,fileDir,fileName, payload: fileName})
         })
         break;
       case 'update': 
