@@ -4,7 +4,7 @@ module.exports = function(RED) {
 
   function  WatchDirectory(config) {
     RED.nodes.createNode(this,config);
-    this.folder = path.normalize( config.folder).replace(/\\/g,"/")
+    this.folder = path.normalize(config.folder)
     this.recursive = config.recursive ? true : false;
     this.typeEvent = config.typeEvent;
     this.ignoreInitial = config.ignoreInitial;
@@ -16,10 +16,9 @@ module.exports = function(RED) {
     var node = this;
     // Initialize watcher.
     const watcher = chokidar.watch(node.folder, {
-      ignored: (filename) => {
-        filename = path.normalize( filename ).replace(/\\/g,"/")
+      ignored: (fileName) => {
+        fileName = path.normalize( fileName )
         let file = path.basename(filename) 
-        //filename.match(/([^\\ | ^/]*)\..{3}$/)
         if (file && file.length){ 
           re = new RegExp(node.ignoredFiles)
           return re.test(file)
@@ -34,9 +33,10 @@ module.exports = function(RED) {
 
     switch (node.typeEvent) {
       case 'create': 
-        watcher.on('add', filename => {
-          const file = path.basename(filename) 
-          const fileDir = path.dirname(filename) 
+        watcher.on('add', fileName => {
+          fileName = path.normalize( fileName )
+          const file = path.basename(fileName) 
+          const fileDir = path.dirname(fileName) 
           node.send({file,fileDir,filename, payload: filename})
         })
         break;
