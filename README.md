@@ -12,7 +12,7 @@ The other watcher (wfwatcher) check recursively and attach filename to payload..
 
 So this plugin attach to msg :
  - file : the name of the file, with extension
- - fileDir : Directory of file
+ - filedir : Directory of file
  - filename: the complete path to the file
  - payload: the complete path to the file
 

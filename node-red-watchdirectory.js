@@ -16,9 +16,9 @@ module.exports = function(RED) {
     var node = this;
     // Initialize watcher.
     const watcher = chokidar.watch(node.folder, {
-      ignored: (fileName) => {
-        fileName = path.normalize( fileName )
-        let file = path.basename(fileName) 
+      ignored: (filename) => {
+        filename = path.normalize( filename )
+        let file = path.basename(filename) 
         if (file && file.length){ 
           re = new RegExp(node.ignoredFiles)
           return re.test(file)
@@ -29,29 +29,40 @@ module.exports = function(RED) {
       ignoreInitial: node.ignoreInitial,
       awaitWriteFinish:true,
       usePolling:true,
+      alwaysStat: true, 
     });
 
+    let payload
     switch (node.typeEvent) {
       case 'create': 
-        watcher.on('add', fileName => {
-          fileName = path.normalize( fileName )
-          const file = path.basename(fileName) 
-          const fileDir = path.dirname(fileName) 
-          node.send({file,fileDir,fileName, payload: fileName})
+        watcher.on('add', (filename, stats) => {
+          payload = node.createMSG(filename, stats) 
+          node.send(payload)
+          node.status({fill:"green", shape: "dot", text: "add "+filename})
         })
         break;
       case 'update': 
-        watcher.on('change', path => log(`File ${path} has been added`))
+        watcher.on('change', (filename, stats) => {
+          payload = node.createMSG(filename, stats) 
+          node.send(payload)
+          node.status({fill:"green", shape: "dot", text: "update "+filename})
+        })
         break;
       case 'delete': 
-        watcher.on('unl', path => log(`File ${path} has been added`))
-        break;
+        watcher.on('unlink',(filename) => {
+          payload = node.createMSG(filename) 
+          node.send(payload)
+          node.status({fill:"green", shape: "dot", text: "delete "+filename})
+      })
+      break;
     }
 
-    watcher.on('all', (event,path) => {
-      node.status({fill:"purple", shape: "ring", text: "work on "+event+" "+ path});
-    }).on('ready', () => {
-      node.status({fill:"green", shape: "ring", text: "Clear"})
+    watcher.on('ready', () => {
+      setTimeout(() => {
+        node.status({fill:"yellow", shape: "ring", text: "Listening..."})
+      }, 10000)
+    }).on('error', (err) => {
+      node.status({fill:"red", shape: "dot", text: "Error : "+err.message})
     })
 
 
@@ -60,5 +71,13 @@ module.exports = function(RED) {
       watcher.close()
     })
   }
+
+  WatchDirectory.prototype.createMSG = function(filename, stats) {
+      filename = path.normalize( filename )
+      const file = path.basename(filename) 
+      const filedir = path.dirname(filename) 
+      return {file,filedir,filename, payload: filename, size: stats?stats.size:0}
+  }
+
   RED.nodes.registerType("watch-directory",WatchDirectory);
 }
