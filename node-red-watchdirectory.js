@@ -16,10 +16,30 @@ module.exports = function(RED) {
     var node = this;
     // Initialize watcher.
     const watcher = chokidar.watch(node.folder, {
-      ignored: (filename) => {
+      /*
+      ignored: function(filename, stats) {
         filename = path.normalize( filename )
         let file = path.basename(filename) 
         if (file && file.length){ 
+          // if (node.ignoredFilesType == "jsonata") {
+          //   const expr = RED.util.prepareJSONataExpression(node.ignoredFiles,node)
+          //   let msg = node.createMSG(filename,stats)
+          //   console.log(expr.evaluate(msg))
+          //   return true
+          //   //return expr.evaluate(msg)
+          // } 
+
+          if (node.ignoredFilesType == "re" && node.ignoredFiles != '') {
+            re = new RegExp(node.ignoredFiles)
+            return re.test(file)
+          }
+          return false
+        }
+      },*/
+      ignored: (filename) => {
+        filename = path.normalize( filename )
+        let file = path.basename(filename) 
+        if (file && file.length && node.ignoredFiles.length){ 
           re = new RegExp(node.ignoredFiles)
           return re.test(file)
         }      
@@ -63,8 +83,8 @@ module.exports = function(RED) {
       }, 10000)
     }).on('error', (err) => {
       node.status({fill:"red", shape: "dot", text: "Error : "+err.message})
+      throw(err)
     })
-
 
     //on close
     node.on('close', () => {
