@@ -4,7 +4,7 @@
         color: 'burlywood',
         defaults: {
             folder: {value:"", required: true},
-            recursive: {value:false},
+            recursive: {value:0},
             typeEvent: {value:"create"},
             ignoreInitial: {value:true},
             ignoredFiles: {value:"",validate: RED.validators.typedInput("ignoredFilesType")},
@@ -48,9 +48,8 @@
         <input type="hidden" id="node-input-ignoredFilesType">
     </div>
      <div class="form-row">
-        <label for="node-input-recursive">&nbsp;</label>        
-         <input type="checkbox" id="node-input-recursive" style="display: inline-block; width: auto; vertical-align: top;">
-         <label for="node-input-recursive" style="width: auto"><i class="fa fa-sitemap"></i> Watch subfolder (recursive) </label>
+        <label for="node-input-recursive"><i class="fa fa-sitemap"></i> Depth</label>
+         <input type="number" id="node-input-recursive" style="display: inline-block; width: auto; vertical-align: top;">
     </div>
     <div class="form-row">
         <label for="node-input-ignoreInitial">&nbsp;</label>            
@@ -75,8 +74,8 @@
         <dd>Type of event who fire the flow</dd>
         <dt>ignored files<span class="property-type">regex</span></dt>
         <dd>(Optional) regex that match file name to exclude (check only on name.ext, not on all path)</dd>
-        <dt>recursive<span class="property-type">boolean</span></dt>
-        <dd>Watch in subfolder ?</dd>
+        <dt>recursive<span class="property-type">number</span></dt>
+        <dd>Depth of folders to watch</dd>
         <dt>On start ignore files in folder<span class="property-type">boolean</span></dt>
         <dd>If they are file in watching directory at start, ignore them</dd>
     </dl>
@@ -105,6 +104,6 @@
     </dl>
 
     <h3>Details</h3>
-    <p>This puglin it's a wrapper for chokidar. I thing that everything it's clear, if it not : 
+    <p>This plugin it's a wrapper for chokidar. I thing that everything it's clear, if it not :
         <a href="https://github.com/fatoldsun00/node-red-contrib-watchdirectory/issues" target="_blank">Try to open an issue on my github</a></p>
 </script>
