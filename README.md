@@ -2,8 +2,6 @@
 
 A watcher file/folder changed for [Node-RED](https://nodered.org/), based on [chokidar](https://github.com/paulmillr/chokidar)
 
-[![BuyMeCoffee][buymecoffee-shield]][buymecoffee-link]
-
 ## Why a third node for watching folder ?
 
 Because the natif node watcher is low level, and trigger "add file" event before file is completed copy on disk. then we need delai and RBE node ...
@@ -53,6 +51,3 @@ $ npm install node-red-contrib-watchdirectory
 PR are welcome
 
 [release-link]: https://github.com/fatoldsun00/node-red-contrib-watchdirectory
-[release-shield]: https://img.shields.io/github/v/release/zachowj/node-red-contrib-home-assistant-websocket?style=for-the-badge
-[buymecoffee-link]: https://www.buymeacoffee.com/fatoldsun00
-[buymecoffee-shield]: https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png
