@@ -29,7 +29,9 @@ module.exports = function(RED) {
       ignoreInitial: node.ignoreInitial,
       awaitWriteFinish:true,
       usePolling:true,
-      alwaysStat: true, 
+      alwaysStat: true,
+      useFsEvents : true,
+      binaryInterval: 1000
     });
 
     let payload
