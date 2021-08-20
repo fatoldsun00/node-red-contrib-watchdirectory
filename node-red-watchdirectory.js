@@ -4,7 +4,8 @@ module.exports = function(RED) {
 
   function  WatchDirectory(config) {
     RED.nodes.createNode(this,config);
-    this.folder = path.normalize(config.folder)
+    this.folderType = config.folderType || "str"
+    this.folder = path.normalize(RED.util.evaluateNodeProperty(config.folder, this.folderType, this))
     this.recursive = config.recursive;
     this.typeEvent = config.typeEvent;
     this.ignoreInitial = config.ignoreInitial;
