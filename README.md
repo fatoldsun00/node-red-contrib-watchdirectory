@@ -1,3 +1,5 @@
+I don't maintain this repo anymore, but i can change owner if there are somebody who want maintain.
+
 # node-red-contrib-watchdirectory
 
 A watcher file/folder changed for [Node-RED](https://nodered.org/), based on [chokidar](https://github.com/paulmillr/chokidar)
