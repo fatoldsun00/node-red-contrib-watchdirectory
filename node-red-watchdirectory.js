@@ -66,7 +66,7 @@ module.exports = function(RED) {
       }, 10000)
     }).on('error', (err) => {
       node.status({fill:"red", shape: "dot", text: "Error : "+err.message})
-      throw(err)
+      node.error(err)
     })
 
     //on close
